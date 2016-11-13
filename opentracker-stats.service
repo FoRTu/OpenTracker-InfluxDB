@@ -1,0 +1,11 @@
+[Unit]
+Description=Take statistics from Bittorrent OpenTracker and write it into a InfluxDB
+After=network.target
+
+[Service]
+Type=simple
+User=nobody
+ExecStart=/usr/local/bin/opentracker_stats.py
+
+[Install]
+WantedBy=multi-user.target
