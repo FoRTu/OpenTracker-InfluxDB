@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 User=nobody
-ExecStart=/usr/local/bin/opentracker_stats.py
+ExecStart=/usr/local/bin/opentracker-stats.py
 
 [Install]
 WantedBy=multi-user.target
