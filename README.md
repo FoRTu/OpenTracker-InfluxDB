@@ -2,6 +2,13 @@
 
 A script that take statistics from [Bittorrent OpenTracker](https://erdgeist.org/arts/software/opentracker/) and write it into a [InfluxDB](https://www.influxdata.com/time-series-platform/influxdb/) database to use it later with any type of graph generator software like [Grafana](http://grafana.org/) or [Chronograf](https://www.influxdata.com/time-series-platform/chronograf/).
 
+### Dependencies
+
+You need to install **python-lxml** and **curl** packages
+```bash
+sudo apt install python-lxml curl
+```
+
 ### Configure
 Before install the script edit the next variables on it with the correct values:
 
@@ -39,3 +46,7 @@ sudo service opentracker-stats status
 sudo service opentracker-stats reload
 sudo service opentracker-stats....
 ```
+
+Now you can create your graphs, for example with [Grafana](http://grafana.org/)....
+
+![Grafana-graph](http://i.imgur.com/fz8ntes.png)
