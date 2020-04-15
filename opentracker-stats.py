@@ -3,27 +3,31 @@
 # Is necessary to install python-lxml and curl packages
 
 from lxml import etree
-import subprocess
+import requests
 import time
 import os
 
-# InfluxDB server and port (IP:PORT)
-influxdb_server = '172.16.2.58:8086'
+# InfluxDB server and port (IP:PORT or domain:port)
+influxdb_server = 'MyInfluxDB.com:8086'
+
+# Uncomment the line below if you use 'https://' to access to your server
+influxdb_server = 'https://' + influxdb_server + "/write"
+
+# Uncomment the line below if you use 'http://' to access to your server
+#influxdb_server = 'http://' + influxdb_server + "/write"
 
 # InfluxDB Database name
 database = 'testdb'
 
 # InfluxDB Auth
-username = 'unflux-suser'
+username = 'influx-user'
 password = 'AtB73HeTqp'
 
 # OpenTracker statistics url
-opentracker_url = 'http://172.16.2.1:6969/status?mode=everything'
+opentracker_url = 'http://mytracker:6969/stats?mode=everything'
 
 # Data query interval in seconds:
-wait = 15
-
-FNULL = open(os.devnull, 'w')
+wait = 30
 
 while True:
     status = etree.parse(opentracker_url)
@@ -56,12 +60,15 @@ while True:
     #print("Completed: " + completed)
 
     # Write to InfluxDB
-    subprocess.call(["curl", "-i", "-XPOST", "http://" + influxdb_server + "/write?db=" + database, "-u", username + ":" + password, "--data-binary", "uptime value=" + str(uptime)], stdout=FNULL, stderr=subprocess.STDOUT)
-    subprocess.call(["curl", "-i", "-XPOST", "http://" + influxdb_server + "/write?db=" + database, "-u", username + ":" + password, "--data-binary", "peers value=" +  str(peers)], stdout=FNULL, stderr=subprocess.STDOUT)
-    subprocess.call(["curl", "-i", "-XPOST", "http://" + influxdb_server + "/write?db=" + database, "-u", username + ":" + password, "--data-binary", "seeds value=" + str(seeds)], stdout=FNULL, stderr=subprocess.STDOUT)
-    subprocess.call(["curl", "-i", "-XPOST", "http://" + influxdb_server + "/write?db=" + database, "-u", username + ":" + password, "--data-binary", "leechers value=" + str(leechers)], stdout=FNULL, stderr=subprocess.STDOUT)
-    subprocess.call(["curl", "-i", "-XPOST", "http://" + influxdb_server + "/write?db=" + database, "-u", username + ":" + password, "--data-binary", "torrents value=" + str(torrents)], stdout=FNULL, stderr=subprocess.STDOUT)
-    subprocess.call(["curl", "-i", "-XPOST", "http://" + influxdb_server + "/write?db=" + database, "-u", username + ":" + password, "--data-binary", "completed value=" + str(completed)], stdout=FNULL, stderr=subprocess.STDOUT)
+    params = (
+     ('db', database),
+     ('precision', 's'),
+     ('u', username),
+     ('p', password),
+    )
+
+    data = 'uptime value=' + uptime + '\ntorrents value=' + torrents + '\npeers value=' + peers + '\nseeds value=' + seeds + '\nleechers value=' + str(leech$
+    response = requests.post(influxdb_server, params=params, data=data)
 
     # wait for 15 seconds
     time.sleep(wait)
