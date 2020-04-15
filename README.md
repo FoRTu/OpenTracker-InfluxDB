@@ -4,7 +4,7 @@ A script that take statistics from [Bittorrent OpenTracker](https://erdgeist.org
 
 ### Dependencies
 
-You need to install **python-lxml** and **curl** packages
+You need to install **python-lxml** package
 ```bash
 sudo apt install python-lxml curl
 ```
@@ -14,7 +14,14 @@ Before install the script edit the next variables on it with the correct values:
 
 ```python
 # InfluxDB server and port (IP:PORT)
-influxdb_server = '172.16.2.58:8086'
+influxdb_server = 'MyInfluxDB.com:8086'
+
+# Uncomment the line below if you use 'https://' to access to your server
+influxdb_server = 'https://' + influxdb_server + "/write"
+
+# Uncomment the line below if you use 'http://' to access to your server
+#influxdb_server = 'http://' + influxdb_server + "/write"
+
 
 # InfluxDB Database name
 database = 'testdb'
