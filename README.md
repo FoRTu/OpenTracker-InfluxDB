@@ -6,7 +6,7 @@ A script that take statistics from [Bittorrent OpenTracker](https://erdgeist.org
 
 You need to install **python-lxml** package
 ```bash
-sudo apt install python-lxml curl
+sudo apt install python-lxml
 ```
 
 ### Configure
